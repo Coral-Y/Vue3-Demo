@@ -1,0 +1,12 @@
+{
+  "include": ["src/**/*", "src/**/*.vue"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "lib": ["es2015"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
