@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('../views/UPlot.vue')
     },
     {
+      path: '/uPlotZoom',
+      name: 'uPlotZoom',
+      component: () => import('../views/UPlotZoom.vue')
+    },
+    {
       path: '/qrCode',
       name: 'qrCode',
       component: () => import('../views/QrCode.vue')

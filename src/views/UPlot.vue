@@ -25,13 +25,9 @@ let opts = ref<uPlot.Options>()
 let opts2 = ref<uPlot.Options>()
 let opts3 = ref<uPlot.Options>()
 
-function round2(val) {
-  return Math.round(val * 100) / 100
-}
+const round2 = (val) => Math.round(val * 100) / 100
 
-function round3(val) {
-  return Math.round(val * 1000) / 1000
-}
+const round3 = (val) => Math.round(val * 1000) / 1000
 
 function prepData(packed) {
   console.time('prep')
@@ -63,13 +59,17 @@ function prepData(packed) {
 }
 
 function makeChart(data) {
+  // 数据分割
   function sliceData(start, end) {
     let d = []
 
-    for (let i = 0; i < data.length; i++) d.push(data[i].slice(start, end))
+    for (let i = 0; i < data.length; i++) {
+      d.push(data[i].slice(start, end))
+    }
 
     return d
   }
+
   let makeFmt = (suffix) => (u, v, sidx, didx) => {
     if (didx == null) {
       let d = u.data[sidx]
@@ -91,8 +91,12 @@ function makeChart(data) {
     // select: {
     //   show: false
     // },
+
+    // series 保存了每一个数据集的配置
     series: [
+      // x轴
       {
+        // console.log(`uPlot实例:${u}`, `数值:${v}`, `所处数据集下标：${sidx}`, didx)
         value: (u, v, sidx, didx) => {
           if (didx == null) {
             let d = u.data[sidx]
@@ -102,35 +106,50 @@ function makeChart(data) {
           return v
         }
       },
+      // {},
+      // 第一个数据集
       {
         label: 'CPU',
-        scale: '%',
+        scale: '%', // 不同单位的series可以通过设置scale绘制不同的y轴
+        // width: 2, //线条的宽度
+        // spanGaps: true, //是否跳过没有值的点
         value: makeFmt('%'),
-        stroke: 'red'
+        stroke: 'red' // 线条颜色
       },
+      // 第二个数据集
       {
         label: 'RAM',
         scale: '%',
         value: makeFmt('%'),
-        stroke: 'blue'
+        stroke: 'blue' // 线条颜色
       },
+      // 第三个数据集
       {
         label: 'TCP Out',
         scale: 'mb',
         value: makeFmt('MB'),
-        stroke: 'green'
+        stroke: 'green' // 线条颜色
       }
     ],
+
+    // 根据scales渲染刻度、数值、标签及网格
     axes: [
       {},
       {
         scale: '%',
-        values: (u, vals, space) => vals.map((v) => +v.toFixed(1) + '%')
+        //values: 格式化刻度标签的数组
+        //格式一: ticks：沿轴刻度的原始值数组 space: CSS像素中确定的刻度间隔
+        values: (self, ticks, space) => ticks.map((v) => +v.toFixed(1) + '%')
+        // 格式二：带有断点的刻度格式化程序数组
+        // values: [
+        //  [3600 * 24 * 365, '{YYYY}', null, null, null, null, null, null, 1]
+        // ]
       },
       {
-        side: 1,
+        side: 1, // 放置轴的位置 0: top, 1: right, 2: bottom, 3: left
+
         scale: 'mb',
-        values: (u, vals, space) => vals.map((v) => +v.toFixed(2) + ' MB'),
+        values: (u, ticks, space) => ticks.map((v) => +v.toFixed(2) + ' MB'),
         grid: { show: false }
       }
     ]
@@ -243,7 +262,7 @@ function makeChart(data) {
     ]
   }
 
-  let interval = 1000
+  let interval = 20
 
   let start1 = 0
   let len1 = 3000
@@ -274,8 +293,6 @@ function makeChart(data) {
     len3 += 10
     data3.value = sliceData(start3, start3 + len3)
   }, interval)
-
-  console.timeEnd('chart')
 }
 onMounted(async () => {
   const result = await fetch('/json/data.json')
