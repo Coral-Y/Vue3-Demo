@@ -43,7 +43,8 @@ const items: ItemType[] = [
       { label: 'Echarts', key: 'echarts', icon: h(PieChartOutlined) },
       { label: 'AntvG2', key: 'antvG2', icon: h(PieChartOutlined) },
       { label: 'UPlot', key: 'uPlot', icon: h(PieChartOutlined) },
-      { label: 'UPlotZoom', key: 'uPlotZoom', icon: h(PieChartOutlined) }
+      { label: 'UPlotZoom', key: 'uPlotZoom', icon: h(PieChartOutlined) },
+      { label: 'UPlotTime', key: 'uPlotTime', icon: h(PieChartOutlined) }
     ]
   },
   { label: '二维码', key: 'qrCode', icon: h('i', { class: 'iconfont icon-bulletin' }) },
