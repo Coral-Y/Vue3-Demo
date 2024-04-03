@@ -16,6 +16,9 @@
 import UPlotVue from 'uplot-vue'
 import { onMounted, ref } from 'vue'
 import uPlot from 'uPlot'
+import dayjs from 'dayjs'
+
+console.log(dayjs('2024-04-02T18:59:15.178719').valueOf())
 
 let uplotData1 = ref<uPlot.AlignedData>([])
 let uplotData2 = ref<uPlot.AlignedData>([])
