@@ -9,6 +9,9 @@
     <div v-if="opts3">
       <UPlotVue :data="uplotData3" :options="opts3" />
     </div>
+    <div v-if="opts4">
+      <UPlotVue :data="uplotData4" :options="opts4" />
+    </div>
   </div>
 </template>
 
@@ -21,12 +24,14 @@ import dayjs from 'dayjs'
 console.log(dayjs('2024-04-02T18:59:15.178719').valueOf())
 
 let uplotData1 = ref<uPlot.AlignedData>([])
-let uplotData2 = ref<uPlot.AlignedData>([])
+let uplotData2 = ref<uPlot.AlignedData>([]) // 每个数据点间隔1小时
 let uplotData3 = ref<uPlot.AlignedData>([])
+let uplotData4 = ref<uPlot.AlignedData>([])
 
 let opts1 = ref<uPlot.Options>()
 let opts2 = ref<uPlot.Options>()
 let opts3 = ref<uPlot.Options>()
+let opts4 = ref<uPlot.Options>()
 
 function aggDays(data): uPlot.AlignedData {
   let data2 = [data[0].slice(), data[1], data[2], data[3]]
@@ -89,6 +94,50 @@ let ts18 = tsRange(new Date(2018, 0) / 1000, yrHours, hrSecs)
 let ts17 = tsRange(new Date(2017, 0) / 1000, yrHours, hrSecs)
 
 onMounted(() => {
+  // const startDate = new Date('2023-01-01T00:00:00Z')
+  // const endDate = new Date('2023-01-01T00:00:10Z')
+  // const interval = 1000 // 5 minutes// 生成固定间隔的时间数组
+  // const times = []
+  // for (let t = startDate.getTime(); t < endDate.getTime(); t += interval) {
+  //   times.push(t)
+  // }
+  const times = [
+    1672617300, 1672617310, 1672617320, 1672617330, 1672617340, 1672617350, 1672617360, 1672617370
+  ]
+
+  // 生成与时间数组对应的随机数据数组
+  const data = times.map(() => Math.random() * 100)
+
+  uplotData4.value = [times, data]
+  opts4.value = {
+    width: 600,
+    height: 200,
+    scales: {
+      x: {
+        time: true, // 启用时间轴
+        space: 1
+      },
+      y: {
+        range: [0, 100]
+      }
+    },
+    series: [
+      {},
+      {
+        label: '2019',
+        stroke: 'rgba(5, 141, 199, 1)'
+      }
+    ],
+    axes: [
+      {
+        scale: 'x'
+      },
+      {
+        scale: 'y'
+      }
+    ]
+  }
+
   fetch('./json/traffic.json')
     .then((r) => r.json())
     .then((data) => {
