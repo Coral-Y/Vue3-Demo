@@ -49,6 +49,7 @@ const items: ItemType[] = [
     ]
   },
   { label: '二维码', key: 'qrCode', icon: h('i', { class: 'iconfont icon-bulletin' }) },
+  { label: 'CSS动画', key: 'animate', icon: h(HighlightOutlined) },
   { label: 'markdown文档', key: 'markdown', icon: h(HighlightOutlined) }
 ]
 

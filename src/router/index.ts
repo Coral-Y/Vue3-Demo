@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import('../views/QrCode.vue')
     },
     {
+      path: '/animate',
+      name: 'animate',
+      component: () => import('../views/Animate.vue')
+    },
+    {
       path: '/',
       name: 'home',
       component: HomeView
