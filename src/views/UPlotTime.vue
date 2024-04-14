@@ -21,8 +21,6 @@ import { onMounted, ref } from 'vue'
 import uPlot from 'uPlot'
 import dayjs from 'dayjs'
 
-console.log(dayjs('2024-04-02T18:59:15.178719').valueOf())
-
 let uplotData1 = ref<uPlot.AlignedData>([])
 let uplotData2 = ref<uPlot.AlignedData>([]) // 每个数据点间隔1小时
 let uplotData3 = ref<uPlot.AlignedData>([])
@@ -90,39 +88,41 @@ function tsRange(from, qty, incr) {
 const yrHours = 365 * 24
 const hrSecs = 3600
 
+console.log(Date.now())
+console.log(new Date('2024-04-02T18:59:15.178719').getMilliseconds())
+
 let ts18 = tsRange(new Date(2018, 0) / 1000, yrHours, hrSecs)
 let ts17 = tsRange(new Date(2017, 0) / 1000, yrHours, hrSecs)
 
 onMounted(() => {
-  // const startDate = new Date('2023-01-01T00:00:00Z')
-  // const endDate = new Date('2023-01-01T00:00:10Z')
-  // const interval = 1000 // 5 minutes// 生成固定间隔的时间数组
-  // const times = []
-  // for (let t = startDate.getTime(); t < endDate.getTime(); t += interval) {
-  //   times.push(t)
-  // }
-  const times = [
-    1672617300, 1672617310, 1672617320, 1672617330, 1672617340, 1672617350, 1672617360, 1672617370
-  ]
+  const startDate = new Date('2023-01-01T00:00:00Z')
+  const endDate = new Date('2023-01-01T00:00:10Z')
+  const interval = 500 // 生成固定间隔的时间数组
+  const times = []
+  for (let t = startDate.getTime(); t < endDate.getTime(); t += interval) {
+    times.push(t / 1000)
+  }
 
   // 生成与时间数组对应的随机数据数组
   const data = times.map(() => Math.random() * 100)
-
   uplotData4.value = [times, data]
   opts4.value = {
     width: 600,
     height: 200,
     scales: {
       x: {
-        time: true, // 启用时间轴
-        space: 1
+        time: true // 启用时间轴
       },
       y: {
         range: [0, 100]
       }
     },
     series: [
-      {},
+      {
+        value: (u: any, v: any) => {
+          return v == null ? '-' : dayjs.unix(v).format('YYYY-MM-DD HH:mm:ss:SSS')
+        }
+      },
       {
         label: '2019',
         stroke: 'rgba(5, 141, 199, 1)'
@@ -130,7 +130,14 @@ onMounted(() => {
     ],
     axes: [
       {
-        scale: 'x'
+        scale: 'x',
+        ticks: {
+          size: 5
+        },
+        values: (self, ticks, space) => {
+          console.log('aaaaa', ticks, space)
+          return ticks.map((v) => dayjs.unix(v).format('ss:SSS'))
+        }
       },
       {
         scale: 'y'
@@ -145,7 +152,7 @@ onMounted(() => {
         title: 'Hourly Users',
         //	tzDate: ts => uPlot.tzDate(new Date(ts * 1e3), 'Etc/UTC'),
         //	tzDate: ts => uPlot.tzDate(new Date(ts * 1e3), 'Europe/London'),
-        width: 1920,
+        width: 1800,
         height: 200,
         axes: [
           {
@@ -226,7 +233,7 @@ onMounted(() => {
 
       opts2.value = {
         title: 'Feb vs Jan 2019',
-        width: 1920,
+        width: 1800,
         height: 200,
         scales: {
           x2: {
@@ -296,7 +303,7 @@ onMounted(() => {
         title: 'Daily Users',
         tzDate: (ts) => uPlot.tzDate(new Date(ts * 1e3), 'Etc/UTC'),
         //	tz: 'Etc/UTC',
-        width: 1920,
+        width: 1800,
         height: 200,
         axes: [
           {
@@ -307,7 +314,6 @@ onMounted(() => {
           }
         ],
         series: [
-          {},
           {
             label: '2019',
             stroke: 'rgba(5, 141, 199, 1)',

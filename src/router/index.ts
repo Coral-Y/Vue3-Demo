@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import('../views/UPlotZoom.vue')
     },
     {
+      path: '/uPlotTest',
+      name: 'uPlotTest',
+      component: () => import('../views/UPlotTest.vue')
+    },
+    {
       path: '/uPlotTime',
       name: 'uPlotTime',
       component: () => import('../views/UPlotTime.vue')

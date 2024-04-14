@@ -44,6 +44,7 @@ const items: ItemType[] = [
       { label: 'AntvG2', key: 'antvG2', icon: h(PieChartOutlined) },
       { label: 'UPlot', key: 'uPlot', icon: h(PieChartOutlined) },
       { label: 'UPlotZoom', key: 'uPlotZoom', icon: h(PieChartOutlined) },
+      { label: 'UPlotTest', key: 'uPlotTest', icon: h(PieChartOutlined) },
       { label: 'UPlotTime', key: 'uPlotTime', icon: h(PieChartOutlined) }
     ]
   },
