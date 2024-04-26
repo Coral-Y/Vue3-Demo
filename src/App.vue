@@ -59,6 +59,7 @@ let selectedKeys = ref<Array<Key>>([])
 onMounted(() => {
   selectedKeys.value = [route.name as Key]
 })
+var source = new EventSource('')
 
 const handleClick = (data) => {
   selectedKeys.value = [data.key]
