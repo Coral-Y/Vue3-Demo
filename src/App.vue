@@ -14,7 +14,7 @@
           @click="handleClick"
         />
       </div>
-      <div class="ml-50">
+      <div class="ml-50 flex-1">
         <RouterView />
       </div>
     </div>
