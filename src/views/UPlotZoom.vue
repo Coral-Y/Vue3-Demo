@@ -2,7 +2,7 @@
   <div v-if="data" class="flex flex-wrap justify-around">
     <div class="flex flex-col items-center">
       <UPlotVue :data="data" :options="opt1" ref="uRange" />
-      <UPlotVue :data="data" :options="opt2" />
+      <UPlotVue v-if="!loading" :data="data" :options="opt2" ref="u" />
     </div>
   </div>
 </template>
@@ -13,13 +13,11 @@ import { ref } from 'vue'
 import uPlot from 'uPlot'
 
 let uRange = ref()
-
+let u = ref()
+const loading = ref(false)
 let length = 20
 
-let data = ref<uPlot.AlignedData>([
-  Array.from({ length }, (x, i) => i + 1),
-  [40, 43, 60, 65, 71, 73, 80, 72, 84, 68, 76, 84, 57, 45, 13, 48, 96, 14, 36, 12]
-])
+let data = ref<uPlot.AlignedData>([[], []])
 
 // 滚轮滚动
 function wheelScrollPlugin() {
@@ -35,6 +33,7 @@ function wheelScrollPlugin() {
         // wheel scroll
         over.addEventListener('wheel', (e) => {
           e.preventDefault()
+          console.log(scXMin0, scXMax0)
 
           let dx = 0.01 * e.deltaY
           let newScXMin = scXMin0 + dx
@@ -120,7 +119,8 @@ let opt2 = ref<uPlot.Options>({
       key: 'moo'
     },
     bind: {
-      dblclick: () => null // 去除默认双击还原事件(缩放或平移时)
+      dblclick: () => null, // 去除默认双击还原事件(缩放或平移时)
+      mousedown: () => null // 去除点击取消选中效果的功能
     }
   },
   plugins: [wheelScrollPlugin()],
@@ -142,6 +142,22 @@ let opt2 = ref<uPlot.Options>({
     {
       stroke: 'red'
     }
-  ]
+  ],
+  hooks: {
+    setData: [
+      (u) => {
+        u.setScale('x', { min: 3, max: 13 })
+      }
+    ]
+  }
 })
+
+loading.value = true
+setTimeout(() => {
+  data.value = [
+    Array.from({ length }, (x, i) => i + 1),
+    [40, 43, 60, 65, 71, 73, 80, 72, 84, 68, 76, 84, 57, 45, 13, 48, 96, 14, 36, 12]
+  ]
+  loading.value = false
+}, 3000)
 </script>
