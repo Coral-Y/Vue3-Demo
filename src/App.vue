@@ -14,7 +14,7 @@
           @click="handleClick"
         />
       </div>
-      <div class="ml-50">
+      <div class="ml-50 flex-1">
         <RouterView />
       </div>
     </div>
@@ -44,10 +44,12 @@ const items: ItemType[] = [
       { label: 'UPlot', key: 'uPlot', icon: h(PieChartOutlined) },
       { label: 'UPlotZoom', key: 'uPlotZoom', icon: h(PieChartOutlined) },
       { label: 'Zoom', key: 'Zoom', icon: h(PieChartOutlined) },
-      { label: 'Map', key: 'Map', icon: h(PieChartOutlined) }
+      { label: 'Map', key: 'Map', icon: h(PieChartOutlined) },
+      { label: 'UplotHighLight', key: 'UplotHighLight', icon: h(PieChartOutlined) }
     ]
   },
   { label: '二维码', key: 'qrCode', icon: h('i', { class: 'iconfont icon-bulletin' }) },
+  { label: 'CSS动画', key: 'animate', icon: h(HighlightOutlined) },
   { label: 'markdown文档', key: 'markdown', icon: h(HighlightOutlined) }
 ]
 
@@ -57,6 +59,7 @@ let selectedKeys = ref<Array<Key>>([])
 onMounted(() => {
   selectedKeys.value = [route.name as Key]
 })
+var source = new EventSource('')
 
 const handleClick = (data) => {
   selectedKeys.value = [data.key]

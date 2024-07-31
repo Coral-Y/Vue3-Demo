@@ -35,9 +35,19 @@ const router = createRouter({
       component: () => import('../views/myZoom.vue')
     },
     {
+      path: '/uplotHighLight',
+      name: 'uplotHighLight',
+      component: () => import('../views/UplotHighLight.vue')
+    },
+    {
       path: '/qrCode',
       name: 'qrCode',
       component: () => import('../views/QrCode.vue')
+    },
+    {
+      path: '/animate',
+      name: 'animate',
+      component: () => import('../views/Animate.vue')
     },
     {
       path: '/',
