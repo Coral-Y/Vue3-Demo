@@ -30,7 +30,6 @@ import HelloWorld from './components/HelloWorld.vue'
 import { ItemType } from 'ant-design-vue'
 import { HighlightOutlined, PieChartOutlined } from '@ant-design/icons-vue'
 import { Key } from 'ant-design-vue/es/_util/type'
-
 const router = useRouter()
 const route = useRoute()
 
@@ -44,7 +43,8 @@ const items: ItemType[] = [
       { label: 'AntvG2', key: 'antvG2', icon: h(PieChartOutlined) },
       { label: 'UPlot', key: 'uPlot', icon: h(PieChartOutlined) },
       { label: 'UPlotZoom', key: 'uPlotZoom', icon: h(PieChartOutlined) },
-      { label: 'Zoom', key: 'Zoom', icon: h(PieChartOutlined) }
+      { label: 'Zoom', key: 'Zoom', icon: h(PieChartOutlined) },
+      { label: 'Map', key: 'Map', icon: h(PieChartOutlined) }
     ]
   },
   { label: '二维码', key: 'qrCode', icon: h('i', { class: 'iconfont icon-bulletin' }) },

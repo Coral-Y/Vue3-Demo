@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import UPlotVue from 'uplot-vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onUnmounted } from 'vue'
 import uPlot from 'uPlot'
 
 let data = ref<uPlot.AlignedData>([])
@@ -149,12 +149,19 @@ function wheelZoomPlugin(opts) {
   }
 }
 
-function makeChart() {
+function makeChart(data1) {
   console.time('chart')
+
+  function sliceData(start, end) {
+    let d = []
+    const xData = Array.from({ length: 1000 }, (x, i) => i)
+    d.push(xData, data1.slice(start, end))
+    return d
+  }
 
   opts.value = {
     title: '拖拽及滚轮缩放',
-    width: 600,
+    width: 800,
     height: 400,
     plugins: [wheelZoomPlugin({ factor: 0.75 })],
     // 视图中可见的最大最小范围
@@ -176,15 +183,28 @@ function makeChart() {
     ]
   }
 
-  data.value = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-    [40, 43, 60, 65, 71, 73, 80, 72, 84, 68, 76, 84, 57]
-  ]
+  let interval = 20
+  let start1 = 0
+  let len1 = 1000
+  data.value = sliceData(start1, start1 + len1)
+
+  timer1 = setInterval(function () {
+    start1 += 10
+    data.value = sliceData(start1, start1 + len1)
+  }, interval)
+
 
   console.timeEnd('chart')
 }
+let timer1
+onMounted(async () => {
+  const result = await fetch('/json/data1.json')
+  const packed = await result.json()
+  makeChart(packed.data)
+})
 
-onMounted(() => {
-  makeChart()
+
+onUnmounted(() => {
+  clearTimeout(timer1)
 })
 </script>

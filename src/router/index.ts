@@ -5,6 +5,11 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/Map.vue')
+    },
+    {
       path: '/eCharts',
       name: 'eCharts',
       component: () => import('../views/ECharts.vue')
